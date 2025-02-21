@@ -1,0 +1,65 @@
+# AI-Enhanced Knowledge Management Platform
+
+## Project Overview
+A modern knowledge management platform that helps teams organize, search, and generate insights from their documents and conversations. This project showcases multiple AI/ML integrations and modern development practices.
+
+## Key Features
+1. Document Processing & Analysis
+   - PDF, Word, and markdown document parsing
+   - AI-powered text summarization
+   - Keyword and topic extraction
+   - Document classification
+   - Semantic search capabilities
+
+2. Smart Chat Interface
+   - Context-aware chatbot using LLMs
+   - Document-grounded responses
+   - Conversation memory and threading
+   - Multi-language support
+
+3. Knowledge Graph
+   - Automated relationship mapping between documents
+   - Visual graph exploration
+   - Entity recognition and linking
+   - Topic clustering
+
+## Technical Stack
+
+### Frontend
+- Next.js 14 with App Router
+- TypeScript
+- Tailwind CSS
+- Shadcn/UI components
+- React Query for state management
+- D3.js for knowledge graph visualization
+
+### Backend
+- FastAPI (Python)
+- PostgreSQL with pgvector for vector similarity search
+- Redis for caching and rate limiting
+- Docker & Docker Compose
+- Celery for background tasks
+
+### AI/ML Components
+- LangChain for LLM orchestration
+- OpenAI API integration
+- Hugging Face transformers for:
+  - Text summarization
+  - Named Entity Recognition
+  - Document classification
+- sentence-transformers for document embeddings
+
+### DevOps & Infrastructure
+- GitHub Actions for CI/CD
+- AWS infrastructure (or alternative cloud provider)
+- Kubernetes for container orchestration
+- Prometheus & Grafana for monitoring
+- ELK Stack for logging
+
+### Testing & Quality
+- Jest for frontend testing
+- Pytest for backend testing
+- Cypress for E2E testing
+- ESLint & Prettier
+- Python type hints
+- OpenAPI documentation
