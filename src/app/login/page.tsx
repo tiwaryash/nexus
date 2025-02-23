@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -12,16 +13,19 @@ interface LoginForm {
 }
 
 export default function LoginPage() {
-  const { login, isLoading } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const { login, isLoading, user } = useAuth();
   const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
-
   const onSubmit = async (data: LoginForm) => {
     try {
-      await login(data.email, data.password);
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Login failed:', error);
+      setError(null);
+      const response = await login(data.email, data.password);
+      if (response?.user) {
+        router.push('/dashboard');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to login. Please try again.');
     }
   };
 
@@ -34,6 +38,11 @@ export default function LoginPage() {
               Sign in to your account
             </h2>
           </div>
+          {error && (
+            <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+              {error}
+            </div>
+          )}
           <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div className="rounded-md shadow-sm space-y-4">
               <div>

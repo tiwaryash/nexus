@@ -1,12 +1,15 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../ui/ThemeToggle'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface MainLayoutProps {
   children: ReactNode
 }
 
 export default function MainLayout({ children }: MainLayoutProps) {
+  const { user, logout } = useAuth();
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <nav className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-100 dark:border-gray-700">
@@ -19,18 +22,43 @@ export default function MainLayout({ children }: MainLayoutProps) {
             </div>
             <div className="flex items-center space-x-4">
               <ThemeToggle />
-              <Link 
-                href="/login"
-                className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Login
-              </Link>
-              <Link 
-                href="/register"
-                className="btn-primary text-sm font-medium"
-              >
-                Register
-              </Link>
+              {user ? (
+                <>
+                  <Link 
+                    href="/dashboard"
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link 
+                    href="/profile"
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={logout}
+                    className="btn-primary text-sm font-medium"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link 
+                    href="/login"
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Login
+                  </Link>
+                  <Link 
+                    href="/register"
+                    className="btn-primary text-sm font-medium"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

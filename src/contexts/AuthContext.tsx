@@ -1,6 +1,7 @@
 'use client';
-import { createContext, useContext, useState, ReactNode } from 'react';
-import { useLogin, useRegister, useLogout } from '@/hooks/useAuth';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { useLogin, useRegister, useLogout, useAuthStatus } from '@/hooks/useAuth';
+import { api } from '@/lib/api';
 
 interface User {
   id: string;
@@ -20,13 +21,35 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [mounted, setMounted] = useState(false);
   const loginMutation = useLogin();
   const registerMutation = useRegister();
   const logoutMutation = useLogout();
+  const authStatus = useAuthStatus();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (authStatus.data) {
+      setUser(authStatus.data.user);
+    }
+  }, [authStatus.data]);
+
+  if (!mounted) {
+    return null;
+  }
 
   const login = async (email: string, password: string) => {
-    const result = await loginMutation.mutateAsync({ email, password });
-    setUser(result.user);
+    try {
+      const result = await loginMutation.mutateAsync({ email, password });
+      setUser(result.user);
+      await Promise.resolve();
+      return result;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const register = async (email: string, password: string, name: string) => {
