@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -17,14 +17,22 @@ export default function LoginPage() {
   const { login, isLoading, user } = useAuth();
   const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();
+
+  useEffect(() => {
+    if (user) {
+      console.log("Attempting to redirect to dashboard...");
+      router.push('/dashboard');
+    }
+  }, [user, router]);
+
   const onSubmit = async (data: LoginForm) => {
     try {
+      console.log("Login attempt with email:", data.email);
       setError(null);
-      const response = await login(data.email, data.password);
-      if (response?.user) {
-        router.push('/dashboard');
-      }
+      const result = await login(data.email, data.password);
+      console.log("Login successful, result:", result);
     } catch (err: any) {
+      console.error("Login error:", err);
       setError(err.message || 'Failed to login. Please try again.');
     }
   };

@@ -1,14 +1,22 @@
+'use client';
+
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../ui/ThemeToggle'
 import { useAuth } from '@/contexts/AuthContext'
+import { LogOut, User } from 'lucide-react'
 
 interface MainLayoutProps {
   children: ReactNode
 }
 
 export default function MainLayout({ children }: MainLayoutProps) {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuth()
+
+  const handleLogout = async () => {
+    await logout()
+    window.location.href = '/'
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -24,23 +32,15 @@ export default function MainLayout({ children }: MainLayoutProps) {
               <ThemeToggle />
               {user ? (
                 <>
-                  <Link 
-                    href="/dashboard"
-                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Dashboard
-                  </Link>
-                  <Link 
-                    href="/profile"
-                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Profile
-                  </Link>
+                  <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-300">
+                    <User className="w-5 h-5" />
+                    <span>{user.name}</span>
+                  </div>
                   <button
-                    onClick={logout}
-                    className="btn-primary text-sm font-medium"
+                    onClick={handleLogout}
+                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
-                    Logout
+                    <LogOut className="w-5 h-5" />
                   </button>
                 </>
               ) : (
@@ -69,3 +69,5 @@ export default function MainLayout({ children }: MainLayoutProps) {
     </div>
   )
 }
+
+

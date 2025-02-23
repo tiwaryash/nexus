@@ -33,40 +33,34 @@ export const useAuthStatus = () => {
 };
 
 export const useLogin = () => {
-    const queryClient = useQueryClient();
-    const router = useRouter(); 
-    console.log("okokokok",router);
-  
-    return useMutation<LoginResponse, AuthError, { email: string; password: string }>({
-      mutationFn: async (credentials) => {
-        try {
-          const { data } = await api.post('/auth/login', credentials);
-          console.log("Raw API Response:", data);
+  const queryClient = useQueryClient();
+  const router = useRouter();
 
-          
-          return data;
-        } catch (error: any) {
-          if (error.response?.status === 401) {
-            throw new Error('Incorrect email or password');
-          }
-          throw error;
+  return useMutation<LoginResponse, AuthError, { email: string; password: string }>({
+    mutationFn: async (credentials) => {
+      try {
+        const { data } = await api.post('/auth/login', credentials);
+        console.log("Login response:", data);
+        return data;
+      } catch (error: any) {
+        if (error.response?.status === 401) {
+          throw new Error('Incorrect email or password');
         }
-      },
-      onSuccess: (data) => {
-        console.log(data);
-        localStorage.setItem('token', data.access_token);
-        queryClient.setQueryData(['user'], data.user);
-        console.log("BALLAL", queryClient.getQueryData(['user'])); // This should log the updated user data
-        console.log("Login success, user data:", data.user);
-
-                router.push('/dashboard');
-      },
-      onError: (error) => {
-        localStorage.removeItem('token');
         throw error;
       }
-    });
-  };
+    },
+    onSuccess: (data) => {
+      console.log("Setting token and user data:", data);
+      localStorage.setItem('token', data.access_token);
+      queryClient.invalidateQueries({ queryKey: ['auth-status'] });
+    },
+    onError: (error) => {
+      localStorage.removeItem('token');
+      throw error;
+    }
+  });
+};
+
 export const useRegister = () => {
   const queryClient = useQueryClient();
 

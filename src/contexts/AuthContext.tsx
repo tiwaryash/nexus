@@ -1,19 +1,15 @@
 'use client';
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { useLogin, useRegister, useLogout, useAuthStatus } from '@/hooks/useAuth';
-import { api } from '@/lib/api';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { useLogin, useRegister, useLogout } from '@/hooks/useAuth';
+import { useAuthStatus } from '@/hooks/useAuthStatus';
+import api from '@/lib/api';
+import type { User } from '@/types/auth';
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<any>;
   register: (email: string, password: string, name: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -21,33 +17,31 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [mounted, setMounted] = useState(false);
   const loginMutation = useLogin();
   const registerMutation = useRegister();
   const logoutMutation = useLogout();
-  const authStatus = useAuthStatus();
+  const { data: authData, isLoading: authLoading } = useAuthStatus();
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (authStatus.data) {
-      setUser(authStatus.data.user);
+    if (authData?.user) {
+      setUser(authData.user);
+    } else {
+      setUser(null);
     }
-  }, [authStatus.data]);
-
-  if (!mounted) {
-    return null;
-  }
+  }, [authData]);
 
   const login = async (email: string, password: string) => {
     try {
+      console.log("AuthContext: Starting login process");
       const result = await loginMutation.mutateAsync({ email, password });
+      console.log("AuthContext: Login mutation successful:", result);
+      
+      localStorage.setItem('token', result.access_token);
       setUser(result.user);
-      await Promise.resolve();
+      
       return result;
     } catch (error) {
+      console.error("AuthContext: Login error:", error);
       throw error;
     }
   };
@@ -62,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
-  const isLoading = loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending;
+  const isLoading = loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending || authLoading;
 
   return (
     <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>
