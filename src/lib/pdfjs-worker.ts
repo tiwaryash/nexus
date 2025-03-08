@@ -1,3 +1,4 @@
 import { pdfjs } from 'react-pdf';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`; 
+// Use local worker files instead of CDN
+pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js'; 
