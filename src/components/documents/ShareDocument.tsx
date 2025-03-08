@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import api from '@/lib/api';
 import Button from '@/components/ui/Button';
 
@@ -7,10 +7,23 @@ interface ShareDocumentProps {
   onClose: () => void;
 }
 
+interface Document {
+  id: string;
+  title: string;
+}
+
 export default function ShareDocument({ onClose }: ShareDocumentProps) {
   const [email, setEmail] = useState('');
   const [selectedDoc, setSelectedDoc] = useState('');
-  const [documents, setDocuments] = useState([]);
+
+  // Add query to fetch documents
+  const { data: documents, isLoading } = useQuery({
+    queryKey: ['documents'],
+    queryFn: async () => {
+      const response = await api.get('/api/v1/documents');
+      return response.data;
+    }
+  });
 
   const shareMutation = useMutation({
     mutationFn: async (data: { email: string; documentId: string }) => {
@@ -37,7 +50,7 @@ export default function ShareDocument({ onClose }: ShareDocumentProps) {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-700"
           required
         />
       </div>
@@ -46,24 +59,35 @@ export default function ShareDocument({ onClose }: ShareDocumentProps) {
         <select
           value={selectedDoc}
           onChange={(e) => setSelectedDoc(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded dark:bg-gray-800 dark:border-gray-700"
           required
         >
           <option value="">Select a document</option>
-          {documents.map((doc: any) => (
-            <option key={doc.id} value={doc.id}>
-              {doc.title}
-            </option>
-          ))}
+          {isLoading ? (
+            <option disabled>Loading documents...</option>
+          ) : (
+            documents?.map((doc: Document) => (
+              <option key={doc.id} value={doc.id}>
+                {doc.title}
+              </option>
+            ))
+          )}
         </select>
       </div>
       <Button
         type="submit"
         isLoading={shareMutation.isPending}
-        disabled={!email || !selectedDoc}
+        disabled={!email || !selectedDoc || shareMutation.isPending}
+        className="w-full"
       >
         Share Document
       </Button>
+      
+      {shareMutation.isError && (
+        <div className="text-red-500 text-sm">
+          Failed to share document. Please try again.
+        </div>
+      )}
     </form>
   );
 } 
