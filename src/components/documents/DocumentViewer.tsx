@@ -12,7 +12,8 @@ interface DocumentViewerProps {
 }
 
 export default function DocumentViewer({ documentId, fileType }: DocumentViewerProps) {
-  const { data: documentData, isLoading } = useQuery({
+  // Query for document URL
+  const { data: documentData, isLoading: isLoadingDoc } = useQuery({
     queryKey: ['document', documentId],
     queryFn: async () => {
       const response = await api.get(`/api/v1/documents/${documentId}`);
@@ -20,7 +21,16 @@ export default function DocumentViewer({ documentId, fileType }: DocumentViewerP
     }
   });
 
-  if (isLoading) {
+  // Query for document metadata
+  const { data: metadataData, isLoading: isLoadingMeta } = useQuery({
+    queryKey: ['document-metadata', documentId],
+    queryFn: async () => {
+      const response = await api.get(`/api/v1/documents/${documentId}/metadata`);
+      return response.data;
+    }
+  });
+
+  if (isLoadingDoc || isLoadingMeta) {
     return (
       <div className="flex justify-center items-center p-8">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -45,7 +55,7 @@ export default function DocumentViewer({ documentId, fileType }: DocumentViewerP
           </div>
         </div>
         <div className="p-6 border-t lg:border-t-0 lg:border-l">
-          <DocumentAnalysis metadata={documentData?.metadata} />
+          <DocumentAnalysis metadata={metadataData?.metadata_col} />
         </div>
       </div>
     </div>
