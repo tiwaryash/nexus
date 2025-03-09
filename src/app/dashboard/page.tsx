@@ -10,7 +10,7 @@ import CreateNote from '@/components/documents/CreateNote';
 import ShareDocument from '@/components/documents/ShareDocument';
 import SearchDocuments from '@/components/documents/SearchDocuments';
 import DocumentInsights from '@/components/dashboard/DocumentInsights';
-import KnowledgeGraph from '@/components/visualization/KnowledgeGraph';
+import KnowledgeGraphWrapper from '@/components/visualization/KnowledgeGraphWrapper';
 
 import Modal from '@/components/ui/Modal';
 export default function DashboardPage() {
@@ -96,7 +96,7 @@ export default function DashboardPage() {
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
               {activeTab === 'documents' && <DocumentList />}
               {activeTab === 'insights' && <DocumentInsights />}
-              {activeTab === 'graph' && <KnowledgeGraph />}
+              {activeTab === 'graph' && <KnowledgeGraphWrapper />}
             </div>
   
             {/* Modals */}
