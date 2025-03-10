@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button';
 
 interface TemplateSelectorProps {
   documentId: string;
-  onSuccess: () => void;
+  onSuccess: (content: string) => void;
   onClose: () => void;
 }
 
@@ -42,8 +42,10 @@ export default function TemplateSelector({ documentId, onSuccess, onClose }: Tem
       });
       return response.data;
     },
-    onSuccess: () => {
-      onSuccess();
+    onSuccess: (data) => {
+      if (data.content) {
+        onSuccess(data.content);
+      }
       onClose();
     }
   });
