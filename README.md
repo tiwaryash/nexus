@@ -1,22 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Knowledge AI Platform - Frontend
+
+A modern AI-powered knowledge management platform built with Next.js 14, helping teams organize, search, and generate insights from their documents and conversations.
+
+![Homepage](./public/screenshots/homepage.png)
+
+## Features
+
+- 🔐 **Authentication System**: Secure user authentication and authorization
+
+![Auth Screen](./public/screenshots/auth.png)
+
+- 📄 **Document Management**: Upload, view, and manage multiple document formats
+
+![Document Management](./public/screenshots/documents.png)
+
+- 🤖 **AI-Powered Analysis**: Smart document processing and insights generation
+
+![Document Management](./public/screenshots/documents.png)
+
+![Insights](./public/screenshots/insights.png)
+
+- 🔍 **Semantic Search**: Context-aware document search capabilities
+
+![Search Feature](./public/screenshots/search.png)
+
+- 🌐 **Knowledge Graph**: Visual exploration of document relationships
+
+![Knowledge Graph](./public/screenshots/graph.png)
+
+
+- 🎨 **Dark/Light Mode**: Full theme support with smooth transitions
+
+![mode](./public/screenshots/mode.png)
+
+
+## Tech Stack
+
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: Shadcn/UI
+- **State Management**: React Query
+- **Visualization**: D3.js
+- **HTTP Client**: Axios
+- **Animation**: Framer Motion
+
+## Prerequisites
+
+- Node.js 18+ 
+- npm/yarn/pnpm
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+```bash
+git clone [your-repo-url]
+cd frontend
+```
 
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Set up environment variables:
+Create a `.env.local` file:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

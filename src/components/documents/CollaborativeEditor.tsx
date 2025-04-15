@@ -5,11 +5,10 @@ import StarterKit from '@tiptap/starter-kit';
 import Collaboration from '@tiptap/extension-collaboration';
 import * as Y from 'yjs';
 
-export default function CollaborativeEditor({ documentId }) {
+export default function CollaborativeEditor({ documentId }: { documentId: string }) {
   const ydoc = new Y.Doc();
-  const { socket, isConnected } = useWebSocket(`ws://localhost:8000/ws/${documentId}`);
-  
-  const editor = useEditor({
+  const { socket, isConnected } = useWebSocket(`ws://localhost:8080/ws/${documentId}`);
+  const editor = new Editor({
     extensions: [
       StarterKit,
       Collaboration.configure({
@@ -26,7 +25,6 @@ export default function CollaborativeEditor({ documentId }) {
           {isConnected ? 'Connected' : 'Disconnected'}
         </span>
       </div>
-      <EditorContent editor={editor} />
     </div>
   );
 } 
