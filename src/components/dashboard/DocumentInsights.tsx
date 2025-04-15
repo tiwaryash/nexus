@@ -16,7 +16,6 @@ import {
   Legend,
   Filler
 } from 'chart.js';
-import { VennDiagram } from '@upsetjs/react';
 import api from '@/lib/api';
 import { motion } from 'framer-motion';
 import { Tooltip as TippyTooltip } from 'react-tippy';
@@ -43,7 +42,7 @@ const chartOptions = {
   maintainAspectRatio: false,
   animation: {
     duration: 1000,
-    easing: 'easeInOutQuart'
+    easing: 'easeInOutQuart' as const
   },
   plugins: {
     legend: {
@@ -200,13 +199,15 @@ export default function DocumentInsights() {
           <h3 className="text-lg font-semibold mb-4">Domain Coverage</h3>
           <div className="h-[300px] flex items-center justify-center">
             {vennData.length > 0 ? (
-              <VennDiagram
-                data={vennData}
-                width={400}
-                height={300}
-                padding={20}
-                className="mx-auto"
-              />
+              <div className="grid grid-cols-2 gap-4">
+                {vennData.map((d, i) => (
+                  <div key={i} className="p-4 border rounded-lg">
+                    <h4 className="font-medium mb-2">{d.label}</h4>
+                    <p className="text-sm text-gray-600">Size: {d.size}</p>
+                    <p className="text-sm text-gray-600">Topics: {d.keywords.join(', ')}</p>
+                  </div>
+                ))}
+              </div>
             ) : (
               <p className="text-gray-500">No domain data available</p>
             )}
@@ -246,16 +247,13 @@ export default function DocumentInsights() {
           {insights?.categoryDistribution.metadata && (
             <div className="mt-4 grid grid-cols-2 gap-2">
               {Object.entries(insights.categoryDistribution.metadata).map(([category, metadata]) => (
-                <TippyTooltip
+                <span
                   key={category}
-                  content={<CategoryTooltip category={category} metadata={metadata} />}
-                  arrow={true}
-                  duration={200}
+                  title={`${category}\nComplexity: ${metadata.complexity.toFixed(1)}\nKey topics: ${metadata.keywords.join(', ')}`}
+                  className="text-sm p-2 bg-gray-50 dark:bg-gray-700 rounded cursor-help"
                 >
-                  <div className="text-sm p-2 bg-gray-50 dark:bg-gray-700 rounded cursor-help">
-                    {category}
-                  </div>
-                </TippyTooltip>
+                  {category}
+                </span>
               ))}
             </div>
           )}
