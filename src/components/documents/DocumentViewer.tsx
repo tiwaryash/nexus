@@ -56,7 +56,7 @@ export default function DocumentViewer({ documentId, fileType }: DocumentViewerP
             <TemplateSelector
               documentId={documentId}
               onSuccess={() => {
-                queryClient.invalidateQueries(['document', documentId]);
+                queryClient.invalidateQueries({ queryKey: ['document', documentId] });
                 setShowTemplateSelector(false);
               }}
               onClose={() => setShowTemplateSelector(false)}
