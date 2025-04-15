@@ -1,6 +1,19 @@
 // src/components/documents/DocumentAnalysis.tsx
 import { Tag } from 'lucide-react';
 
+interface Document {
+  id: string;
+  title: string;
+  file_type: string;
+  created_at: string;
+  metadata_col: {
+    summary: string;
+    keywords: string[];
+    entities?: string[];
+  };
+  content: string;
+}
+
 interface DocumentAnalysisProps {
   metadata: Document['metadata_col'];
 }
