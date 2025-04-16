@@ -6,6 +6,16 @@ import Button from '@/components/ui/Button';
 
 type SearchType = 'hybrid' | 'semantic' | 'keyword';
 
+interface SearchResult {
+  id: string;
+  title: string;
+  excerpt: string;
+  similarity_score: number;
+  metadata_col?: {
+    keywords?: string[];
+  };
+}
+
 export default function SearchDocuments({ onClose }: { onClose: () => void }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchType, setSearchType] = useState<SearchType>('hybrid');
@@ -14,7 +24,7 @@ export default function SearchDocuments({ onClose }: { onClose: () => void }) {
     category: '',
     keywords: []
   });
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [error, setError] = useState('');
 
   const searchMutation = useMutation({
