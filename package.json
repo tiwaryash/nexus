@@ -12,6 +12,7 @@
     "@react-pdf/renderer": "^4.2.2",
     "@react-three/drei": "^9.92.7",
     "@react-three/fiber": "^8.15.12",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@tanstack/react-query": "^5.66.11",
     "@tiptap/extension-collaboration": "^2.1.0",
     "@tiptap/react": "^2.1.0",

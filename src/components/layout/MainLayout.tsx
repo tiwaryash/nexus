@@ -19,44 +19,49 @@ export default function MainLayout({ children }: MainLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <nav className="bg-white dark:bg-gray-800 shadow-lg border-b border-gray-100 dark:border-gray-700">
-        <div className="container-custom">
+    <div className="h-screen bg-gray-50 dark:bg-gray-900 overflow-hidden">
+      <nav className="bg-red-800 dark:bg-gray-800 shadow-lg border-b border-red-900 dark:border-gray-700">
+        <div className="px-6">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <Link href="/" className="flex items-center space-x-2">
-                <span className="text-2xl font-bold text-red-800 dark:text-red-500">Nexus Mind</span>
+                <span className="text-2xl font-bold text-white">Nexus Mind</span>
               </Link>
             </div>
             <div className="flex items-center space-x-4">
               {user && (
-                <div className="flex items-center space-x-1">
-                  <Link
-                    href="/dashboard"
-                    className="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    <FileText className="w-4 h-4" />
-                    <span>Documents</span>
-                  </Link>
-                  <Link
-                    href="/chat"
-                    className="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    <span>Chat</span>
-                  </Link>
-                </div>
+                <>
+                  <div className="hidden md:block text-white font-medium">
+                    Welcome back, {user.name}
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center space-x-1 text-red-100 dark:text-gray-300 hover:text-white hover:bg-red-900 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      <FileText className="w-4 h-4" />
+                      <span>Documents</span>
+                    </Link>
+                    <Link
+                      href="/chat"
+                      className="flex items-center space-x-1 text-red-100 dark:text-gray-300 hover:text-white hover:bg-red-900 dark:hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                      <span>Chat</span>
+                    </Link>
+                  </div>
+                </>
               )}
               <ThemeToggle />
               {user ? (
                 <>
-                  <div className="flex items-center space-x-2 text-gray-600 dark:text-gray-300">
+                  <div className="flex items-center space-x-2 text-white">
                     <User className="w-5 h-5" />
-                    <span>{user.name}</span>
+                    <span className="hidden sm:inline">{user.name}</span>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="text-red-100 dark:text-gray-300 hover:text-white hover:bg-red-900 dark:hover:bg-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     <LogOut className="w-5 h-5" />
                   </button>
@@ -65,13 +70,13 @@ export default function MainLayout({ children }: MainLayoutProps) {
                 <>
                   <Link 
                     href="/login"
-                    className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="text-red-100 dark:text-gray-300 hover:text-white hover:bg-red-900 dark:hover:bg-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Login
                   </Link>
                   <Link 
                     href="/register"
-                    className="btn-primary text-sm font-medium"
+                    className="bg-white dark:bg-gray-200 text-red-800 dark:text-gray-800 hover:bg-red-50 dark:hover:bg-gray-300 px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Register
                   </Link>
@@ -81,7 +86,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
           </div>
         </div>
       </nav>
-      <main className="container-custom py-8">
+      <main>
         {children}
       </main>
     </div>

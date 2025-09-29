@@ -11,115 +11,134 @@ import ShareDocument from '@/components/documents/ShareDocument';
 import SearchDocuments from '@/components/documents/SearchDocuments';
 import DocumentInsights from '@/components/dashboard/DocumentInsights';
 import KnowledgeGraphWrapper from '@/components/visualization/KnowledgeGraphWrapper';
+import { Upload, FileText, Share2, Search, BarChart3, Network } from 'lucide-react';
 
 import Modal from '@/components/ui/Modal';
+
 export default function DashboardPage() {
     const { user } = useAuth();
     const [activeTab, setActiveTab] = useState<'documents' | 'insights' | 'graph'>('documents');
     const [activeModal, setActiveModal] = useState<'upload' | 'note' | 'share' | 'search' | null>(null);
   
     const closeModal = () => setActiveModal(null);
+
+    const quickActions = [
+      {
+        id: 'upload',
+        label: 'Upload Document',
+        icon: Upload,
+        description: 'Add new documents to your knowledge base',
+        color: 'blue'
+      },
+      {
+        id: 'note',
+        label: 'Create Note',
+        icon: FileText,
+        description: 'Write and organize your thoughts',
+        color: 'green'
+      },
+      {
+        id: 'share',
+        label: 'Share Document',
+        icon: Share2,
+        description: 'Collaborate with others',
+        color: 'purple'
+      },
+      {
+        id: 'search',
+        label: 'Search',
+        icon: Search,
+        description: 'Find documents and content',
+        color: 'orange'
+      }
+    ];
+
+    const tabs = [
+      {
+        id: 'documents',
+        label: 'Documents',
+        icon: FileText,
+        description: 'Manage your documents'
+      },
+      {
+        id: 'insights',
+        label: 'Analytics',
+        icon: BarChart3,
+        description: 'View insights and trends'
+      },
+      {
+        id: 'graph',
+        label: 'Knowledge Graph',
+        icon: Network,
+        description: 'Explore connections'
+      }
+    ];
   
     return (
       <RequireAuth>
         <MainLayout>
-          <div className="container-custom py-8">
-            <h1 className="text-3xl font-bold mb-8">
-              Welcome, {user?.name}!
-            </h1>
-  
-            {/* Tab Navigation */}
-            <div className="flex space-x-4 mb-6">
-              <button
-                onClick={() => setActiveTab('documents')}
-                className={`px-4 py-2 rounded-lg ${
-                  activeTab === 'documents' 
-                    ? 'bg-red-500 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                Documents
-              </button>
-              <button
-                onClick={() => setActiveTab('insights')}
-                className={`px-4 py-2 rounded-lg ${
-                  activeTab === 'insights' 
-                    ? 'bg-red-500 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                Insights
-              </button>
-              <button
-                onClick={() => setActiveTab('graph')}
-                className={`px-4 py-2 rounded-lg ${
-                  activeTab === 'graph' 
-                    ? 'bg-red-500 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                Knowledge Graph
-              </button>
-            </div>
-  
-            {/* Quick Actions */}
-            {activeTab === 'documents' && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <button
-                  onClick={() => setActiveModal('upload')}
-                  className="p-4 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-500 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
-                >
-                  Upload Document
-                </button>
-                <button
-                  onClick={() => setActiveModal('note')}
-                  className="p-4 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-500 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
-                >
-                  Create Note
-                </button>
-                <button
-                  onClick={() => setActiveModal('share')}
-                  className="p-4 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-500 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
-                >
-                  Share Document
-                </button>
-                <button
-                  onClick={() => setActiveModal('search')}
-                  className="p-4 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-500 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
-                >
-                  Search
-                </button>
+          <div className="h-[calc(100vh-4rem)] bg-slate-50 dark:bg-slate-900 overflow-hidden">
+            <div className="h-full flex flex-col px-6 py-6">
+              
+              {/* Tab Navigation */}
+              <div className="mb-6 flex-shrink-0">
+                <div className="border-b border-gray-200 dark:border-gray-700">
+                  <nav className="flex space-x-8">
+                    {tabs.map((tab) => {
+                      const Icon = tab.icon;
+                      const isActive = activeTab === tab.id;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveTab(tab.id as 'documents' | 'insights' | 'graph')}
+                          className={`group inline-flex items-center py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                            isActive
+                              ? 'border-red-500 text-red-600 dark:text-red-400'
+                              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
+                          }`}
+                        >
+                          <Icon className={`mr-2 h-5 w-5 ${
+                            isActive ? 'text-red-500 dark:text-red-400' : 'text-gray-400 group-hover:text-gray-500'
+                          }`} />
+                          {tab.label}
+                        </button>
+                      );
+                    })}
+                  </nav>
+                </div>
               </div>
-            )}
-  
-            {/* Content Area */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-              {activeTab === 'documents' && <DocumentList />}
-              {activeTab === 'insights' && <DocumentInsights />}
-              {activeTab === 'graph' && <KnowledgeGraphWrapper />}
+
+              {/* Content Area */}
+              <div className="flex-1 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="p-6 h-full overflow-auto">
+                  {activeTab === 'documents' && <DocumentList onOpenModal={setActiveModal} />}
+                  {activeTab === 'insights' && <DocumentInsights />}
+                  {activeTab === 'graph' && <KnowledgeGraphWrapper />}
+                </div>
+              </div>
+
+              {/* Modals */}
+              {activeModal === 'upload' && (
+                <Modal onClose={closeModal} title="Upload Document">
+                  <DocumentUpload onSuccess={closeModal} />
+                </Modal>
+              )}
+              {activeModal === 'note' && (
+                <Modal onClose={closeModal} title="Create Note">
+                  <CreateNote onSuccess={closeModal} />
+                </Modal>
+              )}
+              {activeModal === 'share' && (
+                <Modal onClose={closeModal} title="Share Document">
+                  <ShareDocument onClose={closeModal} />
+                </Modal>
+              )}
+              {activeModal === 'search' && (
+                <Modal onClose={closeModal} title="Search Documents">
+                  <SearchDocuments onClose={closeModal} />
+                </Modal>
+              )}
             </div>
-  
-            {/* Modals */}
-            {activeModal === 'upload' && (
-              <Modal onClose={closeModal} title="Upload Document">
-                <DocumentUpload onSuccess={closeModal} />
-              </Modal>
-            )}
-            {activeModal === 'note' && (
-              <Modal onClose={closeModal} title="Create Note">
-                <CreateNote onSuccess={closeModal} />
-              </Modal>
-            )}
-            {activeModal === 'share' && (
-              <Modal onClose={closeModal} title="Share Document">
-                <ShareDocument onClose={closeModal} />
-              </Modal>
-            )}
-            {activeModal === 'search' && (
-              <Modal onClose={closeModal} title="Search Documents">
-                <SearchDocuments onClose={closeModal} />
-              </Modal>
-            )}
           </div>
         </MainLayout>
       </RequireAuth>

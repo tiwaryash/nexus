@@ -24,22 +24,24 @@ export default function ChatPage() {
   return (
     <RequireAuth>
       <MainLayout>
-        <div className="flex h-[calc(100vh-4rem)]">
-          {/* Sidebar */}
-          <div className="w-80 flex-shrink-0">
-            <ConversationSidebar
-              selectedConversationId={selectedConversationId}
-              onSelectConversation={handleSelectConversation}
-              onNewConversation={() => handleNewConversation()}
-            />
-          </div>
+        <div className="h-[calc(100vh-4rem)] bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex h-full">
+            {/* Sidebar */}
+            <div className="w-80 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+              <ConversationSidebar
+                selectedConversationId={selectedConversationId}
+                onSelectConversation={handleSelectConversation}
+                onNewConversation={() => handleNewConversation()}
+              />
+            </div>
 
-          {/* Main Chat Area */}
-          <div className="flex-1">
-            <ChatInterface
-              conversationId={selectedConversationId}
-              onNewConversation={handleNewConversation}
-            />
+            {/* Main Chat Area */}
+            <div className="flex-1 bg-white dark:bg-gray-800">
+              <ChatInterface
+                conversationId={selectedConversationId}
+                onNewConversation={handleNewConversation}
+              />
+            </div>
           </div>
         </div>
       </MainLayout>

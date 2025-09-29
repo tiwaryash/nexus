@@ -21,6 +21,7 @@ export default function CreateNote({ onSuccess }: CreateNoteProps) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['documents'] });
+      queryClient.invalidateQueries({ queryKey: ['document-insights'] });
       onSuccess();
     },
   });
