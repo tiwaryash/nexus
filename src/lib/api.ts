@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const WS_BASE_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8080';
 
 if (!API_URL) {
   throw new Error('NEXT_PUBLIC_API_URL environment variable is not set');
@@ -40,4 +41,5 @@ api.interceptors.response.use(
   }
 );
 
-export default api; 
+export default api;
+export { API_URL as API_BASE_URL, WS_BASE_URL }; 

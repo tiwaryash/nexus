@@ -103,8 +103,8 @@ const features = [
     icon: FileText
   },
   {
-    title: "Smart Chat Interface",
-    description: "Context-aware chatbot using LLMs with document-grounded responses.",
+    title: "RAG-Powered Chat",
+    description: "Ask questions about your documents and get intelligent, context-aware answers powered by retrieval-augmented generation.",
     icon: MessageSquare
   },
   {

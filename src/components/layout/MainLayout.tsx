@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '../ui/ThemeToggle'
 import { useAuth } from '@/contexts/AuthContext'
-import { LogOut, User } from 'lucide-react'
+import { LogOut, User, MessageSquare, FileText, BarChart3 } from 'lucide-react'
 
 interface MainLayoutProps {
   children: ReactNode
@@ -29,6 +29,24 @@ export default function MainLayout({ children }: MainLayoutProps) {
               </Link>
             </div>
             <div className="flex items-center space-x-4">
+              {user && (
+                <div className="flex items-center space-x-1">
+                  <Link
+                    href="/dashboard"
+                    className="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>Documents</span>
+                  </Link>
+                  <Link
+                    href="/chat"
+                    className="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    <span>Chat</span>
+                  </Link>
+                </div>
+              )}
               <ThemeToggle />
               {user ? (
                 <>
