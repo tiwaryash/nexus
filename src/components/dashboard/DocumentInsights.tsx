@@ -197,11 +197,11 @@ export default function DocumentInsights() {
       color: "bg-white dark:bg-gray-800",
       icon: Globe,
       component: (
-        <div className="h-[400px]">
+        <>
           {vennData.length > 0 ? (
-            <div className="space-y-3 pr-2">
+            <div className="space-y-3 pr-2 h-full overflow-y-auto">
               {vennData.map((d, i) => (
-        <motion.div 
+                <motion.div 
                   key={i} 
                   className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700"
                   whileHover={{ scale: 1.02 }}
@@ -211,14 +211,14 @@ export default function DocumentInsights() {
                   <p className="text-sm text-blue-600 dark:text-blue-300">Size: {d.size}</p>
                   <p className="text-sm text-blue-600 dark:text-blue-300">Topics: {d.keywords.join(', ')}</p>
                 </motion.div>
-                ))}
-              </div>
-            ) : (
+              ))}
+            </div>
+          ) : (
             <div className="flex items-center justify-center h-full">
               <p className="text-gray-500">No domain data available</p>
             </div>
-            )}
-          </div>
+          )}
+        </>
       )
     },
     {
@@ -228,31 +228,27 @@ export default function DocumentInsights() {
       color: "bg-white dark:bg-gray-800",
       icon: PieChart,
       component: (
-        <>
-          <div className="h-[400px]">
-            <Doughnut 
-              data={insights?.categoryDistribution || defaultChartData}
-              options={{
-                ...chartOptions,
-                cutout: '60%',
-                plugins: {
-                  ...chartOptions.plugins,
-                  tooltip: {
-                    callbacks: {
-                      label: (context) => {
-                        const metadata = insights?.categoryDistribution.metadata?.[context.label as string];
-                        if (metadata) {
-                          return `${context.label}: ${context.parsed} docs (${metadata.keywords.join(', ')})`;
-                        }
-                        return `${context.label}: ${context.parsed}`;
-                      }
+        <Doughnut 
+          data={insights?.categoryDistribution || defaultChartData}
+          options={{
+            ...chartOptions,
+            cutout: '60%',
+            plugins: {
+              ...chartOptions.plugins,
+              tooltip: {
+                callbacks: {
+                  label: (context) => {
+                    const metadata = insights?.categoryDistribution.metadata?.[context.label as string];
+                    if (metadata) {
+                      return `${context.label}: ${context.parsed} docs (${metadata.keywords.join(', ')})`;
                     }
+                    return `${context.label}: ${context.parsed}`;
                   }
                 }
-              }}
-            />
-          </div>
-        </>
+              }
+            }
+          }}
+        />
       )
     }
   ];
