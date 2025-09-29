@@ -46,8 +46,8 @@ export default function DocumentViewer({ documentId, fileType }: DocumentViewerP
   }
 
   const tabs = [
-    { id: 'document', label: 'Document', icon: '📄' },
-    { id: 'analysis', label: 'AI Analysis', icon: '🤖' }
+    { id: 'document', label: 'Document' },
+    { id: 'analysis', label: 'AI Analysis'}
   ];
 
   return (

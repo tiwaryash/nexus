@@ -226,7 +226,7 @@ export default function ChatInterface({
                 {message.context_documents && message.context_documents.length > 0 && (
                   <div className="mt-3 space-y-2">
                     <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-                      📚 Sources ({message.context_documents.length})
+                      Sources ({message.context_documents.length})
                     </p>
                     <div className="space-y-2">
                       {message.context_documents.map((doc, docIndex) => (
